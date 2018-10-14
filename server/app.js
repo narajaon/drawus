@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/dist/drawus'));
 console.log(__dirname + '/../src/index.html');
 
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname + '/../src/index.html'));
+    res.sendFile(path.join(__dirname + '/../dist/index.html'));
 });
 
 io.on('connection', (socket) => {
