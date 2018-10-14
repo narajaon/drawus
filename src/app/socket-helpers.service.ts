@@ -7,7 +7,7 @@ import * as io from 'socket.io-client'
 export class SocketHelpersService {
 
   private socket: SocketIOClient.Socket;
-  private socketUrl = 'http://localhost:8080';
+  private socketUrl = 'https://obscure-dawn-13799.herokuapp.com/';
 
   constructor() { }
 
