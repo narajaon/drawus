@@ -12,11 +12,12 @@ export class AppComponent implements OnInit {
   pixW = 5;
   pixH = 5;
   currentColor = 'red';
+  pixToDraw = [];
 
   constructor(private socketServ: SocketHelpersService) { }
 
-  drawSquare(posX, posY, ctx) {
-    ctx.fillStyle = this.currentColor;
+  drawSquare(posX, posY, ctx, color) {
+    ctx.fillStyle = color;
     ctx.fillRect(posX, posY, this.pixW, this.pixH);
   }
 
@@ -33,12 +34,16 @@ export class AppComponent implements OnInit {
       const x = (e.offsetX / canvas.offsetWidth) * canvas.width;
       const y = (e.offsetY / canvas.offsetHeight) * canvas.height;
 
-      this.socketServ.send({ coord : [x, y], color: this.currentColor })
-      this.drawSquare(x, y, ctx);
+      this.socketServ.send({ coord: [x, y], color: this.currentColor })
+      this.drawSquare(x, y, ctx, this.currentColor);
     });
 
     canvas.addEventListener('mousedown', () => {
       this.isDrawingState = true;
+    });
+
+    canvas.addEventListener('mouseout', () => {
+      this.isDrawingState = false;
     });
 
     canvas.addEventListener('mouseup', () => {
@@ -52,14 +57,13 @@ export class AppComponent implements OnInit {
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     canvas.width = screen.width * 0.5;
     canvas.height = screen.height * 0.5;
-    const ctx = <CanvasRenderingContext2D> canvas.getContext('2d', { antialias: true });
+    const ctx = <CanvasRenderingContext2D>canvas.getContext('2d', { antialias: true });
 
     socket.on('mouseEvent', (data) => {
       const x = data.coord[0];
       const y = data.coord[1];
 
-      ctx.fillStyle = data.color;
-      ctx.fillRect(x, y, this.pixW, this.pixH);
+      this.drawSquare(x, y, ctx, data.color);
     });
 
     this.addCanvasEventListeners(canvas, ctx);
