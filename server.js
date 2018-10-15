@@ -3,7 +3,7 @@ const path = require("path");
 const bodyParser = require('body-parser');
 const app = express();
 const server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const io = require('socket.io')(server);
 const PORT = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/dist/drawus'));
