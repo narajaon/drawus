@@ -11,17 +11,28 @@ export class AppComponent implements OnInit {
   isDrawingState = false;
   pixW = 5;
   pixH = 5;
-  currentColor = 'red';
-  pixToDraw = [];
-
+  currentColor = 'red'; 
+  
   constructor(private socketServ: SocketHelpersService) { }
-
+  
   drawSquare(posX, posY, ctx, color) {
     ctx.fillStyle = color;
     ctx.fillRect(posX, posY, this.pixW, this.pixH);
   }
-
-  getColor(color) {
+  
+  switchButtonStyle(color) {
+    const lastButton = document.getElementById(this.currentColor);
+    const currentButton = document.getElementById(color);
+    
+    lastButton.style.borderRadius = 'none';
+    lastButton.style.borderStyle = 'none';
+    lastButton.style.borderColor = 'none';
+    
+    currentButton.style.borderRadius = '100px';
+    currentButton.style.borderStyle = 'solid';
+    currentButton.style.borderColor = 'bisque';
+    
+    //change currently used color
     this.currentColor = color;
   }
 
@@ -53,6 +64,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const socket = this.socketServ.connect();
+    this.switchButtonStyle(this.currentColor);
 
     const canvas = <HTMLCanvasElement>document.getElementById('canvas');
     canvas.width = screen.width * 0.5;
